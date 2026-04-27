@@ -32,6 +32,12 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        foreach (['has_variants','is_active','is_featured','track_inventory'] as $field) {
+            if ($request->has($field)) {
+                $request->merge([$field => filter_var($request->input($field), FILTER_VALIDATE_BOOLEAN)]);
+            }
+        }
+
         $data = $request->validate([
             'category_id'       => 'required|exists:categories,id',
             'name'              => 'required|string|max:255',
@@ -96,6 +102,12 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        foreach (['has_variants','is_active','is_featured','track_inventory'] as $field) {
+            if ($request->has($field)) {
+                $request->merge([$field => filter_var($request->input($field), FILTER_VALIDATE_BOOLEAN)]);
+            }
+        }
+
         $data = $request->validate([
             'category_id'       => 'sometimes|exists:categories,id',
             'name'              => 'sometimes|string|max:255',
