@@ -43,6 +43,7 @@ class ProductController extends Controller
         };
 
         $results = $query->paginate($request->per_page ?? 12);
+        $results->getCollection()->each->append('thumbnail_url');
         $promoPct = Promotion::activePercentage();
 
         return response()->json(array_merge($results->toArray(), ['promo_percentage' => $promoPct]));
@@ -67,7 +68,7 @@ class ProductController extends Controller
         $promoPct = Promotion::activePercentage();
 
         return response()->json([
-            'product'          => $product->append(['average_rating', 'effective_price']),
+            'product'          => $product->append(['average_rating', 'effective_price', 'thumbnail_url']),
             'related'          => $related,
             'promo_percentage' => $promoPct,
         ]);
@@ -78,7 +79,7 @@ class ProductController extends Controller
         $products = Product::with(['primaryImage', 'category'])
             ->active()->featured()->latest()->limit(8)->get();
 
-        return response()->json($products);
+        return response()->json($products->each->append('thumbnail_url'));
     }
 
     public function categories()

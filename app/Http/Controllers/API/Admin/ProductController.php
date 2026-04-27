@@ -27,7 +27,9 @@ class ProductController extends Controller
             $query->where('is_active', $request->boolean('is_active'));
         }
 
-        return response()->json($query->latest()->paginate($request->per_page ?? 20));
+        $results = $query->latest()->paginate($request->per_page ?? 20);
+        $results->getCollection()->each->append('thumbnail_url');
+        return response()->json($results);
     }
 
     public function store(Request $request)
