@@ -226,16 +226,16 @@ class DatabaseSeeder extends Seeder
 
         // Assign product images in order of creation
         $imageFiles = [
-            'products/1-brazilian-body-wave.jpg',
-            'products/2-peruvian-straight.jpg',
-            'products/3-face-serum.jpg',
-            'products/4-face-cream.jpg',
-            'products/5-body-oil.jpg',
-            'products/6-body-scrub.jpg',
-            'products/7-shower-gel.jpg',
-            'products/8-shea-soap.jpg',
-            'products/9-lipstick.jpg',
-            'products/10-tote-bag.jpg',
+            'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80',
+            'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=600&q=80',
+            'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80',
+            'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&q=80',
+            'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=80',
+            'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&q=80',
+            'https://images.unsplash.com/photo-1607602132700-068258431efa?w=600&q=80',
+            'https://images.unsplash.com/photo-1631390874071-87e3e5fd6c6e?w=600&q=80',
+            'https://images.unsplash.com/photo-1586495777744-4e6232bf2e29?w=600&q=80',
+            'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80',
         ];
 
         \App\Models\Product::orderBy('id')->get()->each(function ($product, $index) use ($imageFiles) {
