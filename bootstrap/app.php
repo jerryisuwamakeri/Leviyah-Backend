@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role'       => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         ]);
+        $middleware->appendToGroup('api', \App\Http\Middleware\CaptureGeoLocation::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
