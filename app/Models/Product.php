@@ -17,6 +17,8 @@ class Product extends Model
         'weight', 'tags',
     ];
 
+    protected $appends = ['thumbnail_url'];
+
     protected function casts(): array
     {
         return [
@@ -42,7 +44,8 @@ class Product extends Model
     {
         if (!$this->thumbnail) return null;
         if (str_starts_with($this->thumbnail, 'http')) return $this->thumbnail;
-        return \Storage::url($this->thumbnail);
+        $disk = config('filesystems.default') === 'local' ? 'public' : config('filesystems.default');
+        return \Storage::disk($disk)->url($this->thumbnail);
     }
 
     public function getEffectivePriceAttribute(): float

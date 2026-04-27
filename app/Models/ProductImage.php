@@ -19,6 +19,7 @@ class ProductImage extends Model
     {
         if (!$value) return null;
         if (str_starts_with($value, 'http')) return $value;
-        return \Storage::url($value);
+        $disk = config('filesystems.default') === 'local' ? 'public' : config('filesystems.default');
+        return \Storage::disk($disk)->url($value);
     }
 }
