@@ -153,28 +153,37 @@ class DatabaseSeeder extends Seeder
                 'is_featured' => true,
             ],
             [
-                'category' => 'bags',
-                'name'     => 'Leviyah Signature Tote Bag',
+                'category'    => 'bags',
+                'name'        => 'Leviyah Signature Tote Bag',
                 'short_description' => 'Premium leather tote bag with Leviyah branding.',
-                'base_price' => 25000,
+                'base_price'  => 25000,
                 'is_featured' => true,
+                'has_variants'  => true,
+                'product_type'  => 'variable',
             ],
         ];
 
-        $hairLengths = ['10 inch', '12 inch', '14 inch', '16 inch', '18 inch', '20 inch', '22 inch', '24 inch'];
+        $hairLengths = ['8 inch','10 inch','12 inch','14 inch','16 inch','18 inch','20 inch','22 inch','24 inch','26 inch','28 inch','30 inch'];
         $hairColors  = [
-            ['name' => 'Natural Black', 'hex' => '#1a1a1a'],
-            ['name' => '1B Natural Black', 'hex' => '#2d2d2d'],
-            ['name' => 'Dark Brown', 'hex' => '#4a2c1a'],
-            ['name' => '613 Blonde', 'hex' => '#f5e6a3'],
-            ['name' => 'Ombre Brown', 'hex' => '#8B4513'],
+            ['name' => 'Natural Black',   'hex' => '#1a1a1a'],
+            ['name' => '1B Natural Black','hex' => '#2d2d2d'],
+            ['name' => 'Dark Brown',      'hex' => '#4a2c1a'],
+            ['name' => '613 Blonde',      'hex' => '#f5e6a3'],
+            ['name' => 'Ombre Brown',     'hex' => '#8B4513'],
+        ];
+        $bagColors = [
+            ['name' => 'Black',      'hex' => '#111111'],
+            ['name' => 'Brown',      'hex' => '#6B3A2A'],
+            ['name' => 'Nude Beige', 'hex' => '#C9A880'],
+            ['name' => 'White',      'hex' => '#F5F0E8'],
+            ['name' => 'Burgundy',   'hex' => '#6D2B3D'],
         ];
         $lipColors   = [
-            ['name' => 'Ruby Red', 'hex' => '#9b111e'],
+            ['name' => 'Ruby Red',   'hex' => '#9b111e'],
             ['name' => 'Nude Beige', 'hex' => '#d4a574'],
             ['name' => 'Dusty Rose', 'hex' => '#dcae96'],
-            ['name' => 'Berry', 'hex' => '#6d2b42'],
-            ['name' => 'Coral', 'hex' => '#ff7f50'],
+            ['name' => 'Berry',      'hex' => '#6d2b42'],
+            ['name' => 'Coral',      'hex' => '#ff7f50'],
         ];
 
         foreach ($sampleProducts as $p) {
@@ -197,10 +206,13 @@ class DatabaseSeeder extends Seeder
                 if (in_array($cat->slug, ['hair'])) {
                     foreach ($hairColors as $color) {
                         foreach ($hairLengths as $length) {
+                            $inches   = (int) $length;
                             $priceAdj = match(true) {
-                                str_contains($length, '20') || str_contains($length, '22') || str_contains($length, '24') => 10000,
-                                str_contains($length, '16') || str_contains($length, '18') => 5000,
-                                default => 0,
+                                $inches >= 26 => 20000,
+                                $inches >= 22 => 15000,
+                                $inches >= 18 => 10000,
+                                $inches >= 14 => 5000,
+                                default       => 0,
                             };
                             $product->variants()->create([
                                 'color'          => $color['name'],
@@ -218,6 +230,15 @@ class DatabaseSeeder extends Seeder
                             'color_hex'      => $color['hex'],
                             'price'          => $product->base_price,
                             'stock_quantity' => 20,
+                        ]);
+                    }
+                } elseif ($cat->slug === 'bags') {
+                    foreach ($bagColors as $color) {
+                        $product->variants()->create([
+                            'color'          => $color['name'],
+                            'color_hex'      => $color['hex'],
+                            'price'          => $product->base_price,
+                            'stock_quantity' => 15,
                         ]);
                     }
                 }
