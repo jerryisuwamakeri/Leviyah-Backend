@@ -75,7 +75,7 @@ class AuthController extends Controller
 
         if ($request->hasFile('avatar')) {
             $request->validate(['avatar' => 'image|max:2048']);
-            $path = $request->file('avatar')->store('avatars', 'public');
+            $path = $request->file('avatar')->store('avatars', $this->disk());
             $data['avatar'] = $path;
         }
 

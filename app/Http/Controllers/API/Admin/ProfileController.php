@@ -32,7 +32,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('avatar')) {
             $request->validate(['avatar' => 'image|max:2048']);
-            $data['avatar'] = $request->file('avatar')->store('staff', 'public');
+            $data['avatar'] = $request->file('avatar')->store('staff', $this->disk());
         }
 
         $staff->update($data);

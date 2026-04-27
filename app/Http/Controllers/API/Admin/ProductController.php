@@ -64,7 +64,7 @@ class ProductController extends Controller
         $data['slug'] = Str::slug($data['name']) . '-' . Str::random(4);
 
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('products', 'public');
+            $data['thumbnail'] = $request->file('thumbnail')->store('products', $this->disk());
         }
 
         $product = DB::transaction(function () use ($data, $request) {
@@ -79,7 +79,7 @@ class ProductController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $image) {
-                    $path = $image->store('products', 'public');
+                    $path = $image->store('products', $this->disk());
                     ProductImage::create([
                         'product_id' => $product->id,
                         'url'        => $path,
@@ -123,7 +123,7 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('products', 'public');
+            $data['thumbnail'] = $request->file('thumbnail')->store('products', $this->disk());
         }
 
         $product->update($data);
@@ -151,7 +151,7 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('variants', 'public');
+            $data['image'] = $request->file('image')->store('variants', $this->disk());
         }
 
         $variant = $product->variants()->create($data);
@@ -206,7 +206,7 @@ class ProductController extends Controller
         $data['slug'] = $slug;
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $data['image'] = $request->file('image')->store('categories', $this->disk());
         }
 
         return response()->json(Category::create($data), 201);
