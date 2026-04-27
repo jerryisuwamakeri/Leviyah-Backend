@@ -197,7 +197,13 @@ class ProductController extends Controller
             'sort_order'  => 'integer',
         ]);
 
-        $data['slug'] = Str::slug($data['name']);
+        $base = Str::slug($data['name']);
+        $slug = $base;
+        $i    = 1;
+        while (Category::where('slug', $slug)->exists()) {
+            $slug = $base . '-' . $i++;
+        }
+        $data['slug'] = $slug;
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('categories', 'public');
