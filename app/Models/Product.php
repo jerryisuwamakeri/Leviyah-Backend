@@ -38,6 +38,13 @@ class Product extends Model
     public function orderItems()     { return $this->hasMany(OrderItem::class); }
     public function cartItems()      { return $this->hasMany(CartItem::class); }
 
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        if (!$this->thumbnail) return null;
+        if (str_starts_with($this->thumbnail, 'http')) return $this->thumbnail;
+        return \Storage::url($this->thumbnail);
+    }
+
     public function getEffectivePriceAttribute(): float
     {
         return (float) ($this->sale_price ?? $this->base_price);
