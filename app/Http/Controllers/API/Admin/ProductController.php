@@ -77,6 +77,10 @@ class ProductController extends Controller
 
             $product = Product::create($data);
 
+            if (empty($product->barcode)) {
+                $product->update(['barcode' => 'LVY' . str_pad($product->id, 6, '0', STR_PAD_LEFT)]);
+            }
+
             foreach ($variants as $v) {
                 $product->variants()->create($v);
             }
