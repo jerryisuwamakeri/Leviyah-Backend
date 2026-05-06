@@ -17,6 +17,8 @@ use App\Http\Controllers\API\Admin\ActivityLogController;
 use App\Http\Controllers\API\Admin\POSController;
 use App\Http\Controllers\API\Admin\PromotionController;
 use App\Http\Controllers\API\Admin\ProfileController;
+use App\Http\Controllers\API\Admin\ExpenseController;
+use App\Http\Controllers\API\Admin\InventoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -179,5 +181,21 @@ Route::middleware(['auth:staff'])->prefix('admin')->group(function () {
     Route::prefix('pos')->group(function () {
         Route::get('products',   [POSController::class, 'products']);
         Route::post('sale',      [POSController::class, 'createSale']);
+    });
+
+    // Expenses
+    Route::prefix('expenses')->group(function () {
+        Route::get('/',                  [ExpenseController::class, 'index']);
+        Route::post('/',                 [ExpenseController::class, 'store']);
+        Route::patch('{expense}',        [ExpenseController::class, 'update']);
+        Route::delete('{expense}',       [ExpenseController::class, 'destroy']);
+        Route::get('meta/categories',    [ExpenseController::class, 'categories']);
+    });
+
+    // Inventory & Reports
+    Route::prefix('inventory')->group(function () {
+        Route::get('report',        [InventoryController::class, 'report']);
+        Route::get('low-stock',     [InventoryController::class, 'lowStockAlerts']);
+        Route::get('barcode',       [InventoryController::class, 'barcodeSearch']);
     });
 });
